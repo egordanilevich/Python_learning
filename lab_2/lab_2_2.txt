@@ -1,0 +1,82 @@
+import math
+
+
+def check_number(prompt):
+    try:
+        return float(prompt)
+    except ValueError:
+        print("Ошибка: Некорректный ввод. Пожалуйста, введите число.")
+        return check_number(input(prompt))
+
+
+def get_triangle(base, height):
+    return 0.5 * base * height
+
+
+def get_circle(radius):
+    return math.pi * pow(radius, 2)
+
+
+def get_parallelogram(base, height):
+    return base * height
+
+
+def stop():
+    return "Выход"
+
+
+menu_options = {
+    'T': lambda values: get_triangle(values[0], values[1]),
+    'C': lambda values: get_circle(values[0]),
+    'P': lambda values: get_parallelogram(values[0], values[1]),
+    'E': lambda values: stop()
+}
+
+
+def remove_values(figure, values):
+    values_copy = values.copy()
+    if figure == 'C':
+        values_copy.pop(0)
+    elif figure == 'T' or figure == 'P':
+        values_copy.pop(0)
+        values_copy.pop(0)
+
+    return values_copy
+
+
+def choose_option(figure, values):
+    return menu_options.get(figure, lambda values: "Нет такого пункта меню.")(values)
+
+
+def menu(L):
+    figure = L[0].pop(0)
+    values = L[1]
+
+    if (len(values) < 2 and (figure == 'T' or figure == 'P')) or (len(values) < 1 and figure == 'C'):
+        print(f"Недостаточно значений для фигуры {figure}.")
+        return ""
+
+    result = choose_option(figure, values)
+
+    values = remove_values(figure, values)
+    L[1] = values
+
+    return f"{figure} := {result}"
+
+
+L = []
+
+
+figures = input("Введите символы для выбора фигур через пробел: ").upper().split()
+L.append(figures)
+
+inputs = input("Введите входные данные через пробел: ").split()
+L.append([check_number(prompt) for prompt in inputs])
+
+
+while L[0]:
+    result = menu(L)
+    # print(L)
+    #if not result:
+        #break
+    print(result)

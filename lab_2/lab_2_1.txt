@@ -1,0 +1,18 @@
+import math
+
+
+def chek_number(prompt):
+    try:
+        return float(input(prompt))
+    except ValueError:
+        print("Ошибка: Некорректный ввод. Пожалуйста, введите число.")
+        return chek_number(prompt)
+
+
+def calculate_expression(x, n):
+    return math.tan(x) / x + pow(math.sin(x ** n), 1 / n) + pow(pow(math.e, n + 1), x + 2)
+
+
+x = chek_number("Введите значение переменной x: ")
+n = chek_number("Введите значение переменной n: ")
+print(calculate_expression(x, n))
